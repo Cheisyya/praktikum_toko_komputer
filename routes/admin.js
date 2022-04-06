@@ -14,11 +14,19 @@ const req = require("express/lib/request")
 const res = require("express/lib/response")
 const admin = model.admin
 
+//import auth
+const auth = require("../auth")
+const jwt = require("jsonwebtoken")
+const SECRET_KEY = "TokoKomputer"
+
 //Endpoint menampilkan semua data Admin, METHOD : GET, Function : FINDALL()
-app.get("/",(req, res) =>{
+app.get("/", (req, res) =>{
     admin.findAll()
         .then(admin => {
-            res.json(admin)
+            res.json({
+                count : admin.length,
+                admin : admin
+            })
         })
         .catch(error => {
             res.json({
@@ -89,6 +97,30 @@ app.delete ("/:id", (req, res) => {
                 })
             })
         })
+//endpoint login admin(authentication), METHOD : POST, Function : FindOne
+app.post("/auth", async (req,res) => {
+    let params = {
+        username: req.body.username,
+        password: md5(req.body.password)
+    }
+ 
+    let result = await admin.findOne({where: params})
+    if(result){
+        let payload = JSON.stringify(result)
+        // generate token
+        let token = jwt.sign(payload, SECRET_KEY)
+        res.json({
+            logged: true,
+            data: result,
+            token: token
+        })
+    }else{
+        res.json({
+            logged: false,
+            message: "Invalid username or password"
+        })
+    }
+})
 
 
 module.exports = app

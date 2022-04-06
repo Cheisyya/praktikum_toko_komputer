@@ -12,6 +12,11 @@ const fs = require("fs")
 const models = require("../models/index")
 const product = models.product
 
+//import auth
+const auth = require("../auth")
+// app.use(auth)//harus login baru bisa akese endpoint
+
+
 //config storage image (deklarasi foto)
 const storage = multer.diskStorage({
     destination:(req,file,cb) => {
@@ -28,7 +33,8 @@ app.get("/", (req, res) =>{
     product.findAll()
         .then(result => {
             res.json({
-                product: result
+                count : result.length,
+                product : result
             })
         })
         .catch(error => {

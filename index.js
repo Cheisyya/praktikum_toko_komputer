@@ -6,6 +6,8 @@ const cors = require("cors")
 const app = express()
 app.use(cors())
 
+app.use(express.static(__dirname))
+
 //Endpoint Admin
 const admin = require('./routes/admin')
 app.use("/admin", admin)
@@ -18,8 +20,12 @@ app.use("/customer", customer)
 const product = require('./routes/product');
 app.use("/product", product)
 
+//endpoint transaksi
+const transaksi = require('./routes/transaksi');
+app.use("/transaksi", transaksi)
+
 //Run Server (Penutup)
-app.listen(1010, () => {
-    console.log("Server run on port 1010");
+app.listen(8080, () => {
+    console.log("Server run on port 8080");
 })
 

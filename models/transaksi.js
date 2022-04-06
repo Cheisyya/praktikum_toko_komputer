@@ -11,31 +11,29 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.customer,{
+      // menambahkan relasi
+      this.belongsTo(models.customer, {
         foreignKey: "customer_id",
         as: "customer"
       })
-
-      this.hasMany(models.detail_transaksi,{
+      this.hasMany(models.detail_transaksi, {
         foreignKey: "transaksi_id",
         as: "detail_transaksi"
       })
- 
     }
   };
   transaksi.init({
     transaksi_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      autoIncrement: true
+      autoIncrement: true,
+      allowNull: false
     },
-
     customer_id: {
-    type:DataTypes.INTEGER,
-    waktu: DataTypes.DATE,
-    allowNull: false
-    }
-
+      type: DataTypes.INTEGER,
+      allowNull: false  // data customer harus diisi dulu
+    },
+    waktu: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'transaksi',

@@ -11,44 +11,32 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.transaksi,{
+      // menmabahkan relasi
+      this.belongsTo(models.transaksi, {
         foreignKey: "transaksi_id",
         as: "transaksi"
       })
- 
-      this.belongsTo(models.product,{
+      this.belongsTo(models.product, {
         foreignKey: "product_id",
         as: "product"
       })
-
     }
   };
   detail_transaksi.init({
-    transaksi_id: {
-    type:DataTypes.INTEGER,
-    allowNull: false,
-    primaryKey: true
-    },
-
+    transaksi_id: {  
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },  
     product_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-    },
-
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },  
     price: DataTypes.DOUBLE,
     qty: DataTypes.DOUBLE
-    
   }, {
     sequelize,
     modelName: 'detail_transaksi',
     tableName: 'detail_transaksi'
   });
-
-  // create relation
-  detail_transaksi.associate = (models) => {
-    detail_transaksi.belongsTo(models.product,{foreignKey: "product_id", as: "product"})
-    
-  }
-
   return detail_transaksi;
 };
